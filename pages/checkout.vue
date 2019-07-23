@@ -6,13 +6,13 @@
         <div class="col-md-6 offset-md-3 mt-3">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Cart</h5>
+              <h5 class="card-title">Card</h5>
               <p class="card-text">{{ numberOfItems }} items selected:</p>
               <ul>
                 <li v-for="dish in selectedDishes" :key="dish.id" class="card-text mb-2">
                   Name: {{ dish.name }} (${{ dish.price }}) ({{ dish.quantity }})
-                  <button class="btn btn-sm btn-success" @click="addToCart(dish)">+</button>
-                  <button class="btn btn-sm btn-warning ml-2" @click="removeFromCart(dish)">-</button>
+                  <button class="btn btn-sm btn-success" @click="addToCard(dish)">+</button>
+                  <button class="btn btn-sm btn-warning ml-2" @click="removeFromCard(dish)">-</button>
                 </li>
               </ul>
               <h5 class="card-text">
@@ -97,13 +97,13 @@ export default {
       return this.$store.getters['dishes/list']
     },
     selectedDishes() {
-      return this.$store.getters['cart/items']
+      return this.$store.getters['card/items']
     },
     price() {
-      return this.$store.getters['cart/price']
+      return this.$store.getters['card/price']
     },
     numberOfItems() {
-      return this.$store.getters['cart/numberOfItems']
+      return this.$store.getters['card/numberOfItems']
     }
   },
   methods: {
@@ -120,15 +120,15 @@ export default {
       }
       try {
         await strapi.createEntry('orders', {
-          amount: this.$store.getters['cart/price'],
-          dishes: this.$store.getters['cart/items'],
+          amount: this.$store.getters['card/price'],
+          dishes: this.$store.getters['card/items'],
           address: this.address,
           postalCode: this.postalCode,
           city: this.city,
           token
         })
         alert('Your order have been successfully submitted.')
-        this.emptyCart()
+        this.emptyCard()
         this.$router.push('/')
       } catch (err) {
         this.loading = false
@@ -136,9 +136,9 @@ export default {
       }
     },
     ...mapMutations({
-      addToCart: 'cart/add',
-      removeFromCart: 'cart/remove',
-      emptyCart: 'cart/emptyList'
+      addToCard: 'card/add',
+      removeFromCard: 'card/remove',
+      emptyCard: 'card/emptyList'
     })
   }
 }
